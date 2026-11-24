@@ -1,0 +1,48 @@
+{% extends 'gimnasio/base.html' %}
+
+{% block title %}Clientes - Gimnasio{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Clientes registrados</h1>
+        <a href="{% url 'crear_cliente' %}" class="btn">+ Registrar nuevo cliente</a>
+    </div>
+
+    {# LAB 07: filtros que usan los métodos del QuerySet personalizado #}
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+        <a href="{% url 'lista_clientes' %}" class="btn btn-sm{% if filtro != 'todos' %} btn-secondary{% endif %}">Todos</a>
+        <a href="?filtro=activos" class="btn btn-sm{% if filtro != 'activos' %} btn-secondary{% endif %}">Con inscripción activa</a>
+        <a href="?filtro=vigentes" class="btn btn-sm{% if filtro != 'vigentes' %} btn-secondary{% endif %}">Con membresía vigente</a>
+        <a href="?filtro=pagos_mes" class="btn btn-sm{% if filtro != 'pagos_mes' %} btn-secondary{% endif %}">Con pagos este mes</a>
+    </div>
+
+    {# COMENTARIO DE DOCUMENTACIÓN: Se aplica el filtro 'upper' al nombre para estandarizar la vista en mayúsculas sin alterar la base de datos #}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre (Mayúsculas)</th>
+            <th>DNI</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.id }}</td>
+            <td>{{ cliente.nombre|upper }}</td>
+            <td>{{ cliente.dni }}</td>
+            <td>{{ cliente.correo }}</td>
+            <td>{{ cliente.telefono }}</td>
+            <td class="acciones">
+                <a href="{% url 'detalle_cliente' cliente.id %}" class="btn btn-sm">Ver</a>
+                <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-sm btn-secondary">Editar</a>
+                <a href="{% url 'eliminar_cliente' cliente.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+            {# AQUI REUTILIZAMOS EL COMPONENTE CON INCLUDE #}
+            {% include 'gimnasio/mensaje_vacio.html' %}
+        {% endfor %}
+    </table>
+{% endblock %}

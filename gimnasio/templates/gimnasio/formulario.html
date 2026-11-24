@@ -1,0 +1,16 @@
+{% extends 'gimnasio/base.html' %}
+
+{% block title %}{{ titulo|default:"Formulario" }} - Gimnasio{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ titulo|default:"Formulario" }}</h1>
+    </div>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Guardar</button>
+        <a href="{% if volver_url %}{{ volver_url }}{% else %}{% url volver %}{% endif %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'gimnasio/base.html' %}
+
+{% block title %}Eliminar - Gimnasio{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Confirmar eliminación</h1>
+    </div>
+
+    <p>¿Está seguro de eliminar el {{ tipo }}: <strong>{{ objeto }}</strong>?</p>
+    <p style="color: var(--muted);">Se eliminarán también los registros que dependan de este.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url volver %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}
