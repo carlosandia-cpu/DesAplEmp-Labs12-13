@@ -1,128 +1,189 @@
-# DesAplEmp — Labs 12 y 13
+# Desarrollo de Aplicaciones Empresariales — Labs 12, 13 y 14
 
-Proyecto académico de **Desarrollo de Aplicaciones Empresariales**, realizado con **Django REST Framework** y **React + Vite**. Conserva los ejercicios anteriores de GymManager y prepara una **plataforma educativa de venta de cursos** como temática para los siguientes laboratorios.
+## 1. Descripción del proyecto
 
-> **Estado del proyecto:** el módulo GymManager y sus consultas AJAX corresponden a prácticas previas. Las apps `catalogo` y `pedidos` se han creado como estructura inicial. El catálogo de cursos, el carrito, los pedidos y la integración de pagos descritos abajo son **diseño previsto**, no funcionalidades terminadas.
+Este repositorio contiene las prácticas desarrolladas en los laboratorios 12, 13 y 14 del curso Desarrollo de Aplicaciones Empresariales.
 
-## 1. Tipo de comercio y canales
+Se utiliza Django REST Framework como backend y React con Vite como frontend, estableciendo la comunicación mediante Axios y peticiones AJAX.
 
-- **Modelo propuesto:** B2C (una plataforma ofrece cursos directamente a estudiantes).
-- **Canales previstos:** aplicación web, acceso desde navegador móvil y posibles enlaces desde redes sociales. Todos pueden consumir una API REST común.
+En el Laboratorio 14 se adaptó el ejemplo de comercio electrónico al contexto del proyecto integrador **SmartIA**, una plataforma educativa que permite consultar cursos, verificar cupos disponibles y registrar matrículas con pagos simulados.
 
-## 2. Roles
+**Importante:** esta implementación es una demostración académica independiente del proyecto integrador principal.
 
-| Rol | Permisos previstos | Pantalla prevista |
-| --- | --- | --- |
-| Visitante | Explorar y buscar cursos | Catálogo |
-| Estudiante | Agregar cursos al carrito, crear pedidos y consultar matrículas | Catálogo, carrito, mis pedidos |
-| Administrador | Crear, actualizar y eliminar cursos; gestionar pedidos | Panel administrativo propio |
+## 2. Tecnologías utilizadas
 
-## 3. Mapa de módulos
+| Tecnología | Función |
+|---|---|
+| Python 3.13 | Lenguaje utilizado en el backend |
+| Django | Framework del servidor |
+| Django REST Framework | Desarrollo de API REST |
+| SQLite | Base de datos local |
+| React | Interfaz de usuario |
+| Vite | Herramienta de desarrollo del frontend |
+| Axios | Peticiones HTTP entre React y Django |
+| JavaScript y JSX | Componentes del frontend |
+| Git y GitHub | Control de versiones |
 
-| Módulo | Responsabilidad | Estado |
-| --- | --- | --- |
-| Catálogo | Mostrar y administrar cursos | App Django `catalogo` creada; lógica por implementar |
-| Carrito | Mantener selección temporal de cursos | Planificado |
-| Usuarios | Gestionar estudiantes, administradores y permisos | Planificado |
-| Pedidos | Registrar compras y detalles | App Django `pedidos` creada; lógica por implementar |
-| Pagos | Registrar confirmaciones de un proveedor externo | Planificado; sin pagos reales |
-| Cupos | Validar disponibilidad antes de matricular | Planificado |
-| Administración | Administrar cursos y pedidos desde React | Planificado |
-| Seguridad | Autenticación, autorización y validaciones | Planificado |
-| Notificaciones | Avisar sobre el estado de pedidos y matrículas | Planificado |
+## 3. Laboratorios desarrollados
 
-## 4. Requisitos funcionales
+### Laboratorio 12 — AJAX y Axios
 
-| ID | Descripción | Criterio de aceptación |
-| --- | --- | --- |
-| RF01 | Consultar los cursos disponibles | Se muestran registros consultados a la API de Django |
-| RF02 | Buscar cursos por nombre | El listado presenta los registros coincidentes |
-| RF03 | Agregar cursos al carrito | Los cursos elegidos y el subtotal aparecen en el carrito |
-| RF04 | Registrar pedidos con su detalle | Django guarda el pedido y sus cursos asociados |
-| RF05 | Administrar cursos | Un administrador autorizado puede crear, editar y eliminar cursos |
+Se implementó la comunicación entre React y Django mediante peticiones HTTP, utilizando Axios para realizar consultas y operaciones CRUD.
 
-## 5. Requisitos no funcionales
+Principales funcionalidades:
 
-| ID | Descripción | Criterio de aceptación verificable |
-| --- | --- | --- |
-| RNF01 | Rendimiento | El catálogo carga en menos de 3 segundos bajo condiciones de prueba definidas |
-| RNF02 | Adaptabilidad | La interfaz funciona en pantallas de 360 px y en escritorio sin desbordamiento horizontal en sus vistas principales |
-| RNF03 | Seguridad | Las operaciones administrativas sin autorización reciben HTTP 401 o 403 |
+- Configuración de Axios en `frontend/src/api.js`.
+- Consultas GET mediante `useEffect`.
+- Operaciones POST, PATCH y DELETE.
+- Búsquedas, filtros y ordenamiento.
+- Manejo de errores y estados de carga.
+- Configuración de CORS.
 
-Los criterios anteriores son **objetivos de diseño**, no resultados de pruebas ya realizadas.
+### Laboratorio 13 — Arquitectura del comercio electrónico
 
-## 6. Reglas de negocio
+Se analizaron los componentes de una aplicación de comercio electrónico y se diseñó una arquitectura basada en Django REST Framework y React.
 
-| Regla | Validación prevista | Problema que evita |
-| --- | --- | --- |
-| RN01 | Django obtiene el precio desde la base de datos | Manipulación del precio desde el navegador |
-| RN02 | Django comprueba los cupos antes de confirmar el pedido | Sobreventa de cupos |
-| RN03 | Django usa `Decimal` para importes monetarios | Errores de precisión |
-| RN04 | El proveedor externo procesa los datos de tarjeta; no se almacenan en la app | Exposición de datos bancarios |
-| RN05 | Django valida el pedido y la confirmación de pago antes de habilitar el curso | Matrículas sin compra confirmada |
+Se crearon las aplicaciones `catalogo` y `pedidos`, reutilizadas posteriormente para el Laboratorio 14.
 
-## 7. Arquitectura propuesta
+### Laboratorio 14 — Componentes de comercio electrónico adaptados a SmartIA
 
-```text
-Usuario (estudiante o administrador)
-    ↓
-React (páginas y componentes)
-    ↕ HTTP/JSON mediante Axios (frontend/src/api.js)
-Django REST Framework (URL / Router / ViewSet)
-    ↕
-Serializer (validación) → Django ORM → Base de datos SQLite
-    ↕
-Respuesta JSON + código HTTP → React actualiza el estado
+Se desarrolló un catálogo educativo con cursos y matrículas, adaptando los componentes de comercio electrónico al contexto de SmartIA.
 
-Django ↔ Pasarela externa de pago (integración futura)
-```
+Funcionalidades implementadas:
 
-**Operación principal prevista:** explorar cursos → agregarlos al carrito → confirmar compra → Django valida precios y cupos → crear pedido pendiente → verificar pago → registrar matrícula y habilitar acceso.
+- Modelos de categorías y cursos.
+- Registro y consulta de cursos mediante Django ORM.
+- API REST con serializers y ViewSets.
+- Operaciones CRUD sobre cursos.
+- Búsqueda por título y descripción.
+- Validación de precios mayores que cero.
+- Catálogo de cursos en React.
+- Consulta del detalle de cada curso.
+- Registro de matrículas.
+- Validación y descuento de cupos.
+- Registro de pedidos de matrícula.
+- Pago simulado.
+- Actualización de los cupos en la interfaz sin recargar la página.
 
-**Entidades previstas para la siguiente semana:** `Curso`, `Estudiante`, `Pedido` (**principal**), `DetallePedido` (**detalle**) y `Pago`.
+## 4. Modelos de SmartIA
 
-## 8. Estructura del repositorio
+| Modelo | Responsabilidad |
+|---|---|
+| CategoriaCurso | Clasificar los cursos educativos |
+| Curso | Guardar título, descripción, precio, cupos, estado y categoría |
+| Cliente | Representar al estudiante en la demostración |
+| PedidoCurso | Registrar los pedidos de matrícula |
+| DetallePedidoCurso | Relacionar cursos con pedidos |
+| PagoCurso | Registrar el pago simulado y su estado |
+
+Se utiliza `ForeignKey` para establecer relaciones entre modelos.
+
+`PROTECT` evita la eliminación de registros que tienen información relacionada, mientras que `CASCADE` permite eliminar detalles cuando se elimina su pedido correspondiente.
+
+## 5. Estructura del proyecto
 
 ```text
 DesAplEmp-Lab12/
-├── config/             # Configuración y URLs principales de Django
-├── core/               # App base del proyecto
-├── store/              # App de prácticas anteriores
-├── gimnasio/           # API y funcionalidades de GymManager (Labs anteriores)
-├── catalogo/           # Estructura inicial del catálogo educativo
-├── pedidos/            # Estructura inicial de pedidos
+├── catalogo/
+│   ├── models.py
+│   ├── serializers.py
+│   ├── api_views.py
+│   └── migrations/
+├── pedidos/
+│   ├── models.py
+│   ├── serializers.py
+│   ├── api_views.py
+│   └── migrations/
+├── gimnasio/
+├── core/
+├── store/
+├── config/
+│   ├── settings.py
+│   └── urls.py
 ├── frontend/
 │   ├── src/
-│   │   ├── components/ # Componentes reutilizables
-│   │   ├── pages/      # Pantallas nuevas (estructura Lab 13)
-│   │   ├── practica/   # Prácticas de laboratorios anteriores
-│   │   ├── api.js      # Instancia Axios
-│   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   ├── components/
+│   │   ├── practica/
+│   │   ├── pages/
+│   │   │   ├── ProductosPage.jsx
+│   │   │   ├── CursosPage.jsx
+│   │   │   └── CursoDetallePage.jsx
+│   │   ├── api.js
+│   │   └── App.jsx
 │   └── package.json
 ├── manage.py
 ├── requirements.txt
 └── README.md
 ```
 
-## 9. Mapa de rutas propuesto
+## 6. Rutas principales de la API
 
-| Recurso | API de Django prevista | Ruta React prevista |
-| --- | --- | --- |
-| Cursos | `/api/cursos/` | `/cursos` |
-| Detalle de curso | `/api/cursos/{id}/` | `/cursos/:id` |
-| Carrito | Sin API por ahora | `/carrito` |
-| Pedidos | `/api/pedidos/` | `/pedidos` |
-| Detalle de pedido | `/api/pedidos/{id}/` | `/pedidos/:id` |
-| Administración de cursos | `/api/cursos/` | `/admin/cursos` |
+| Método | Ruta | Función |
+|---|---|---|
+| GET | `/api/cursos/` | Listar cursos |
+| GET | `/api/cursos/{id}/` | Consultar un curso |
+| GET | `/api/cursos/?search=Python` | Buscar cursos |
+| POST | `/api/cursos/` | Registrar un curso |
+| PATCH | `/api/cursos/{id}/` | Modificar un curso |
+| DELETE | `/api/cursos/{id}/` | Eliminar un curso |
+| POST | `/api/matriculas/` | Registrar una matrícula con pago simulado |
+| GET | `/api/productos/` | Consultar productos del ejemplo original |
+| GET | `/api/clases/` | Consultar clases del laboratorio anterior |
 
-**Importante:** estas rutas son parte del diseño del Lab 13. Crear `catalogo` y `pedidos` no activa automáticamente esos endpoints ni configura la navegación por URL de React. La API ya existente de GymManager tiene recursos como `/api/membresias/` y `/api/clases/`.
+## 7. Proceso de matrícula
 
-## 10. Ejecución local
+1. El estudiante consulta los cursos desde React.
+2. Selecciona un curso y presiona **Matricularme**.
+3. React envía una petición POST a `/api/matriculas/` mediante Axios.
+4. Django verifica que el estudiante y el curso existan.
+5. Se comprueba que el curso esté activo y tenga cupos suficientes.
+6. Se calcula el importe utilizando el precio registrado en la base de datos.
+7. Se descuentan los cupos disponibles.
+8. Se registra el pedido y su detalle.
+9. Se registra un pago simulado aprobado.
+10. El pedido cambia a estado `PAGADO` y React actualiza el catálogo.
 
-Requisitos: Python 3.13 (para este entorno), Node.js y npm.
+Se utiliza `transaction.atomic()` para agrupar las operaciones y `F()` para actualizar los cupos en la base de datos.
 
-**Backend:**
+## 8. Reglas de negocio
+
+- No se permiten precios menores o iguales a cero.
+- No se permiten matrículas con cantidades menores que uno.
+- No se permiten matrículas si el curso está inactivo.
+- No se permiten matrículas cuando los cupos son insuficientes.
+- El importe se calcula utilizando el precio del servidor.
+- Las operaciones de matrícula se ejecutan dentro de una transacción de base de datos.
+- Los pagos son simulados y no procesan dinero real.
+
+## 9. Módulo de pago simulado
+
+La aplicación cuenta con el modelo `PagoCurso`, que permite registrar el monto y el estado de un pago asociado a una matrícula.
+
+Estados definidos:
+
+- `PENDIENTE`: pago todavía no aprobado.
+- `APROBADO`: pago aceptado.
+- `RECHAZADO`: pago no aceptado.
+
+En esta versión académica, cuando una matrícula se registra correctamente, el sistema crea automáticamente un pago con estado `APROBADO` y cambia el pedido a `PAGADO`.
+
+No existe integración con una pasarela bancaria real, almacenamiento de tarjetas ni verificación externa de pagos.
+
+**Limitación:** este flujo únicamente demuestra el registro de una transacción simulada. En un sistema real, la aprobación del pago debe depender de una confirmación verificable de la pasarela correspondiente.
+
+## 10. Instalación y ejecución
+
+### Requisitos
+
+- Python 3.13
+- Node.js y npm
+- Git
+- Dependencias de `requirements.txt`
+- Dependencias de `frontend/package.json`
+
+### Backend — Django
+
+Desde la raíz del proyecto:
 
 ```powershell
 py -3.13 -m pip install -r requirements.txt
@@ -131,9 +192,17 @@ py -3.13 manage.py check
 py -3.13 manage.py runserver
 ```
 
-Django se inicia normalmente en `http://127.0.0.1:8000/`.
+Servidor Django:
 
-**Frontend** (otra terminal):
+`http://127.0.0.1:8000/`
+
+API de cursos:
+
+`http://127.0.0.1:8000/api/cursos/`
+
+### Frontend — React
+
+En otra terminal:
 
 ```powershell
 cd frontend
@@ -141,27 +210,59 @@ npm install
 npm run dev
 ```
 
-Vite se inicia normalmente en `http://localhost:5173/`. La API base se configura en `frontend/src/api.js` y puede personalizarse mediante `VITE_API_URL`.
+Interfaz web:
 
-**Verificaciones:**
+`http://localhost:5173/`
+
+Ingresar a la sección **SmartIA: Cursos (API)**.
+
+## 11. Pruebas realizadas
+
+| Prueba | Resultado esperado |
+|---|---|
+| Consultar cursos | HTTP 200 |
+| Buscar cursos | HTTP 200 con resultados filtrados |
+| Consultar detalle | HTTP 200 |
+| Crear curso | HTTP 201 |
+| Actualizar curso | HTTP 200 |
+| Eliminar curso temporal | HTTP 204 |
+| Crear curso con precio cero | HTTP 400 |
+| Registrar matrícula válida | HTTP 201 |
+| Solicitar matrícula sin cupos suficientes | HTTP 400 |
+| Consultar cursos desde React | Visualización de datos mediante Axios |
+| Ejecutar lint | Sin errores ni advertencias |
+| Ejecutar build | Compilación exitosa |
+
+### Comandos de verificación
+
+Backend:
 
 ```powershell
 py -3.13 manage.py check
+```
+
+Frontend:
+
+```powershell
 cd frontend
 npm run lint
 npm run build
 ```
 
-Las carpetas generadas `node_modules/` y `dist/`, la base local `db.sqlite3` y los archivos `.env` no deben publicarse. No almacenar credenciales ni datos de tarjeta en el repositorio.
+## 12. Cuenta de demostración
 
-## 11. Estado y próximos pasos
+Para las pruebas locales se utiliza un estudiante de ejemplo:
 
-- [x] Crear y registrar las apps `catalogo` y `pedidos`.
-- [x] Preparar la estructura React y la instancia compartida de Axios.
-- [x] Documentar diseño, requisitos, reglas, arquitectura y rutas del Lab 13.
-- [ ] Crear modelos, serializers y endpoints del catálogo educativo.
-- [ ] Implementar navegación, carrito y pedidos.
-- [ ] Incorporar autenticación y autorización.
-- [ ] Probar las funcionalidades educativas con API real.
+- Nombre: Estudiante Demo
+- Correo: `estudiante.lab14@ejemplo.local`
+- Identificador utilizado: `1`
 
-Este repositorio es material académico; cualquier código compartido por terceros debe publicarse con su autorización.
+**Importante:** el identificador corresponde únicamente a la base de datos local de prueba. La implementación actual no incluye un sistema de autenticación del estudiante para esta operación.
+
+## 13. Consideraciones y limitaciones
+
+El proyecto fue desarrollado con fines académicos y no está preparado para producción.
+
+Entre las mejoras necesarias para un despliegue real se encuentran la autenticación y autorización de estudiantes, la verificación externa de pagos, la prevención de matrículas duplicadas, el endurecimiento de los permisos de las operaciones CRUD y una gestión más completa del ciclo de vida de las matrículas.
+
+El módulo de cursos implementado para estos laboratorios es independiente de las
